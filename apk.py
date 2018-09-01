@@ -68,6 +68,12 @@ def main(url: str) -> None:
     link = soup.find(attrs={"data-google-vignette": "false"})
     if link:
         print(f"URL:{HOST+link.attrs['href']}")
+        url = HOST + link.attrs["href"]
+        with requests.get(url, headers=basic_headers, stream=True) as r:
+            with open(url.split("/")[-1], "wb") as f:
+                for chunk in r.iter_content(chunk_size=1024 * 5):
+                    if chunk:
+                        f.write(chunk)
 
 
 if __name__ == "__main__":
