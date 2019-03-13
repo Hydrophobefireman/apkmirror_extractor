@@ -70,7 +70,7 @@ def main(url: str) -> None:
         print(f"URL:{HOST+link.attrs['href']}")
         url = HOST + link.attrs["href"]
         with requests.get(url, headers=basic_headers, stream=True) as r:
-            with open(url.split("/")[-1], "wb") as f:
+            with open(r.url.split("/")[-1].split("?")[0], "wb") as f:
                 for chunk in r.iter_content(chunk_size=1024 * 5):
                     if chunk:
                         f.write(chunk)
