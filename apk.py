@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
-
+from dl import Downloader
 USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 10.0; en-US) AppleWebKit/604.1.38 (KHTML, like Gecko) Chrome/68.0.3325.162"
 
 basic_headers = {
@@ -69,13 +69,8 @@ def main(url: str) -> None:
     if link:
         print(f"URL:{HOST+link.attrs['href']}")
         url = HOST + link.attrs["href"]
-        with requests.get(url, headers=basic_headers, stream=True) as r:
-            with open(r.url.split("/")[-1].split("?")[0], "wb") as f:
-                for chunk in r.iter_content(chunk_size=1024 * 5):
-                    if chunk:
-                        f.write(chunk)
-
-
+        d = Downloader(url)
+        d.start()
 if __name__ == "__main__":
     search(input("Enter Name of the app:"))
 
